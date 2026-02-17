@@ -1,0 +1,256 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>PAYMENT VIXZZ</title>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" rel="stylesheet">
+
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: 'Poppins', sans-serif;
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      position: relative;
+      overflow: hidden;
+    }
+
+    /* VIDEO BACKGROUND - OPTIMASI */
+    #bg-video {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      z-index: 0;
+      opacity: 0.6;
+      will-change: transform; /* Optimasi GPU */
+      /* Turunin kualitas dikit biar enteng */
+      image-rendering: optimizeQuality;
+    }
+
+    .page {
+      display: none;
+      width: 100%;
+      max-width: 450px;
+      padding: 40px 30px;
+      border-radius: 20px;
+      z-index: 2;
+      position: relative;
+      background: rgba(0, 0, 0, 0.5);
+      border: 1px solid rgba(255, 255, 255, 0.2);
+      backdrop-filter: blur(5px);
+      box-shadow: 0 0 25px rgba(255, 255, 255, 0.3);
+      animation: fadeIn .8s ease;
+    }
+
+    .page.active {
+      display: block;
+    }
+
+    @keyframes fadeIn {
+      from {
+        opacity: 0;
+        transform: translateY(20px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    .logo-container {
+      text-align: center;
+      margin-bottom: 20px;
+    }
+
+    .logo {
+      width: 100px;
+      filter: drop-shadow(0 0 30px #fff);
+      margin-bottom: 20px;
+    }
+
+    .title {
+      font-size: 32px;
+      color: #fff;
+      text-shadow: 0 0 10px #aaa;
+      font-weight: 800;
+      letter-spacing: 1px;
+    }
+
+    .subtitle {
+      font-size: 14px;
+      color: #fff;
+      margin-bottom: 30px;
+    }
+
+    .pay-btn {
+      width: 100%;
+      padding: 14px;
+      font-size: 16px;
+      background: linear-gradient(135deg, #aaa, #777);
+      color: white;
+      font-weight: 600;
+      border: none;
+      border-radius: 10px;
+      cursor: pointer;
+      transition: .3s;
+      margin-bottom: 15px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+    }
+
+    .pay-btn:hover {
+      background: #888;
+      transform: translateY(-2px);
+      box-shadow: 0 8px 16px rgba(255, 255, 255, 0.4);
+    }
+
+    .footer {
+      margin-top: 20px;
+      text-align: center;
+      font-size: 12px;
+      color: #fff;
+    }
+
+    .notification {
+      position: fixed;
+      top: 20px; right: 20px;
+      padding: 12px 16px;
+      border-radius: 8px;
+      background: rgba(50, 50, 50, 0.9);
+      border: 1px solid #fff;
+      color: white;
+      z-index: 1000;
+      transform: translateX(100vw);
+      transition: .3s;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .notification.show {
+      transform: translateX(0);
+    }
+
+    .qris-img {
+      width: 260px;
+      border-radius: 15px;
+      margin-bottom: 20px;
+      box-shadow: 0 0 25px rgba(255, 255, 255, 0.6);
+    }
+  </style>
+</head>
+<body>
+  <!-- VIDEO BACKGROUND -->
+  <video id="bg-video" autoplay loop muted playsinline>
+    <source src="https://files.catbox.moe/gif6xz.mp4" type="video/mp4">
+  </video>
+
+  <!-- AUDIO MUSIK -->
+  <audio id="bgMusic" loop preload="auto">
+    <source src="https://files.catbox.moe/lbut8l.mp3" type="audio/mpeg">
+  </audio>
+
+  <!-- HALAMAN UTAMA -->
+  <div id="paymentPage" class="page active">
+    <div class="logo-container">
+      <img src="https://files.catbox.moe/ldghqo.jpg" alt="Logo" class="logo">
+      <div class="title">ZARRPAYMENT</div>
+      <div class="subtitle">Klik Button untuk salin nomor</div>
+    </div>
+
+    <button class="pay-btn" onclick="handleClick('085779246766')">
+      <i class="fas fa-wallet"></i> Dana: 0857 7924 6766
+    </button>
+    <button class="pay-btn" onclick="handleClick('085779246766')">
+      <i class="fas fa-wallet"></i> GoPay: 0857 7924 6766
+    </button>
+    <button class="pay-btn" onclick="handleClick('082211143725')">
+      <i class="fas fa-wallet"></i> OVO: 0822 1114 3725
+    </button>
+    <button class="pay-btn" onclick="showPage('qrisPage')">
+      <i class="fas fa-qrcode"></i> Lihat QRIS
+    </button>
+
+    <div class="footer">© 2025 PAYMENT</div>
+  </div>
+
+  <!-- HALAMAN QRIS -->
+  <div id="qrisPage" class="page">
+    <h2 style="text-align:center; margin-bottom:20px; color:#fff">QRIS Payment</h2>
+    <div style="text-align:center">
+      <img src="https://files.catbox.moe/g1eqw7.jpeg" alt="QRIS" class="qris-img" style="width:200px;">
+      <p style="color:#fff; margin:15px 0;">QRIS tersedia, silakan download</p>
+    </div>
+    <a href="https://files.catbox.moe/nm110e.jpg" download class="pay-btn">
+      <i class="fas fa-download"></i> Download QRIS
+    </a>
+    <button class="pay-btn" onclick="showPage('paymentPage')">
+      <i class="fas fa-arrow-left"></i> Kembali
+    </button>
+  </div>
+
+  <!-- NOTIFIKASI -->
+  <div id="notification" class="notification">
+    <i class="fas fa-check-circle"></i>
+    <span id="notification-text">Disalin!</span>
+  </div>
+
+  <script>
+    const music = document.getElementById('bgMusic');
+    let isMusicPlaying = false;
+
+    function startMusic() {
+      if (!isMusicPlaying) {
+        // KASIH DELAY 500ms BIAR VIDEO STABIL DULU
+        setTimeout(() => {
+          music.play().then(() => {
+            isMusicPlaying = true;
+            console.log('Musik berhasil diputar');
+          }).catch(e => console.log('Gagal putar musik:', e));
+        }, 500);
+      }
+    }
+
+    function handleClick(text) {
+      startMusic();
+      navigator.clipboard.writeText(text).then(() => {
+        const notif = document.getElementById("notification");
+        document.getElementById("notification-text").textContent = text + " disalin!";
+        notif.classList.add("show");
+        setTimeout(() => notif.classList.remove("show"), 2000);
+      });
+    }
+
+    function showPage(id) {
+      startMusic();
+      document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+      document.getElementById(id).classList.add('active');
+    }
+
+    // FIRST INTERACTION
+    document.addEventListener('click', function globalClick() {
+      startMusic();
+      document.removeEventListener('click', globalClick);
+    }, { once: true });
+    
+    document.addEventListener('touchstart', function globalTouch() {
+      startMusic();
+      document.removeEventListener('touchstart', globalTouch);
+    }, { once: true });
+  </script>
+</body>
+</html>
